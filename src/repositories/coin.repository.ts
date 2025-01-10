@@ -1,30 +1,47 @@
-import CoinModel, { CoinSchema } from "../models/coin.model";
+import { FilterQuery, UpdateQuery } from "mongoose";
+import CoinModel, { ICoin } from "../models/coin.model";
 
 // Task 1: CRUD operations
 class CoinRepository {
-  async createCoin(coin: CoinSchema): Promise<CoinSchema> {
+  async createCoin(coin: ICoin): Promise<ICoin> {
     return await CoinModel.create(coin);
   }
 
-  async getCoins(): Promise<CoinSchema[]> {
+  async getCoins(): Promise<ICoin[]> {
     return await CoinModel.find();
   }
 
-  async getCoinById(coinId: string): Promise<CoinSchema | null> {
+  async getCoinById(coinId: string): Promise<ICoin | null> {
     return await CoinModel.findById(coinId).exec();
   }
 
   async updateCoin(
-    coindId: string,
-    coin: CoinSchema
-  ): Promise<CoinSchema | null> {
-    return await CoinModel.findByIdAndUpdate(coindId, coin, {
+    coinId: string,
+    coin: Partial<ICoin>
+  ): Promise<ICoin | null> {
+    return await CoinModel.findByIdAndUpdate(coinId, coin, {
       new: true,
     }).exec();
   }
 
-  async deleteCoin(coinId: string): Promise<CoinSchema | null> {
+  async deleteCoin(coinId: string): Promise<ICoin | null> {
     return await CoinModel.findByIdAndDelete(coinId).exec();
+  }
+
+  async getCoinByCoinId(coinId: string): Promise<ICoin | null> {
+    return await CoinModel.findOne({ coinId }).exec();
+  }
+
+  async upsertCoin(
+    query: FilterQuery<ICoin>,
+    coin: UpdateQuery<ICoin>
+  ): Promise<ICoin | null> {
+    const result = await CoinModel.findOneAndUpdate(query, coin, {
+      upsert: true,
+      new: true,
+    }).exec();
+
+    return result as ICoin | null;
   }
 }
 

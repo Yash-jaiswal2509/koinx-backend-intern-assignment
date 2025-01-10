@@ -1,7 +1,7 @@
 import mongoose, { Document, Schema } from "mongoose";
 
 // Task 1
-export interface CoinSchema extends Document {
+export interface ICoin extends Document {
   coinId: string;
   coinName: string;
   currentPrice: number;
@@ -17,6 +17,6 @@ const coinSchema: Schema = new Schema({
   change_24h: { type: Number, required: true },
 });
 
-const CoinModel = mongoose.model<CoinSchema>("Coin", coinSchema);
+const CoinModel = mongoose.model<ICoin>("Coin", coinSchema);
 
 export default CoinModel;
