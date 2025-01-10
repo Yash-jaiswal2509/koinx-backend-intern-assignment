@@ -1,7 +1,7 @@
 import axios from "axios";
-import CoinModel, { ICoin } from "../models/coin.model";
+import { ICoin } from "../models/coin.model";
 import CoinRepository from "../repositories/coin.repository";
-
+import nodeCron from "node-cron";
 interface CoingeckoApiResponse {
   [key: string]: {
     usd: number;
@@ -58,6 +58,15 @@ class CoinService {
 
   public async getCoins(): Promise<ICoin[]> {
     return await CoinRepository.getCoins();
+  }
+
+  public backGroundJob(): void {
+    console.log("Starting background job to fetch and store coins data");
+    this.fetchAndStoreCoins();
+    nodeCron.schedule("0 */2 * * *", () => {
+      console.log("Running background job to fetch and storing coins data");
+      this.fetchAndStoreCoins();
+    });
   }
 }
 
