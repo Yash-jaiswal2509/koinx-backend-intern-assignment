@@ -7,7 +7,6 @@ This repository contains the backend implementation for the KoinX internship ass
 - **RESTful API**: Exposes a set of APIs to handle various functionalities required for the assignment.
 - **Scalable Architecture**: Organized codebase following MVC (Model-View-Controller) principles for better scalability and maintainability.
 - **Database Integration**: Integrated with MongoDB.
-- 
 
 ## Installation
 
