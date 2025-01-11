@@ -3,10 +3,11 @@ import mongoose from "mongoose";
 import "dotenv/config";
 import CoinService from "./services/coin.service";
 
-const PORT = process.env.PORT || 3000;
+const PORT = (process.env.PORT || "3000") as string;
+const MONGODB_CONNECTION_STRING = process.env.MONGODB_CONNECTION_STRING as string;
 
 mongoose
-  .connect(process.env.MONGODB_CONNECTION_STRING as string)
+  .connect(MONGODB_CONNECTION_STRING as string)
   .then(() => {
     console.log("Connected to MongoDB");
 
