@@ -3,8 +3,8 @@ import CoinModel, { ICoin } from "../models/coin.model";
 
 // Task 1: CRUD operations
 class CoinRepository {
-  async createCoin(coin: ICoin): Promise<ICoin> {
-    return await CoinModel.create(coin);
+  async createCoin(coin: Partial<ICoin>): Promise<ICoin> {
+    return await CoinModel.create(coin,);
   }
 
   async getCoins(): Promise<ICoin[]> {

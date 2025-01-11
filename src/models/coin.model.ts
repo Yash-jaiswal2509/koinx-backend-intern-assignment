@@ -9,13 +9,18 @@ export interface ICoin extends Document {
   change_24h: number;
 }
 
-const coinSchema: Schema = new Schema({
-  coinId: { type: String, required: true },
-  coinName: { type: String, required: true },
-  currentPrice: { type: Number, required: true },
-  marketCap: { type: Number, required: true },
-  change_24h: { type: Number, required: true },
-});
+const coinSchema: Schema = new Schema(
+  {
+    coinId: { type: String, required: true },
+    coinName: { type: String, required: true },
+    currentPrice: { type: Number, required: true },
+    marketCap: { type: Number, required: true },
+    change_24h: { type: Number, required: true },
+  },
+  {
+    timestamps: true,
+  }
+);
 
 const CoinModel = mongoose.model<ICoin>("Coin", coinSchema);
 

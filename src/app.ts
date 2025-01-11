@@ -7,8 +7,7 @@ const app: Application = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.use("/", (req: Request, res: Response) => {
-  res.json({ message: "Welcome to My KoinX-assignmet" });
-});
+app.use("/", coinRouter);
+
 
 export default app;

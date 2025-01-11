@@ -10,6 +10,7 @@ interface CoingeckoApiResponse {
   };
 }
 class CoinService {
+  // Task 1
   private COINS = ["bitcoin", "ethereum", "matic-network"];
   private COINGECKO_API_URL = process.env.COINGECKO_API_URL as string;
   private params = {
@@ -35,29 +36,21 @@ class CoinService {
       const data = response.data;
       for (const coinId of this.COINS) {
         const coinData = data[coinId];
+        const coinInfo = {
+          coinId,
+          coinName: coinId,
+          currentPrice: coinData.usd,
+          marketCap: coinData.usd_market_cap,
+          change_24h: coinData.usd_24h_change,
+        };
+        // console.log("Coin data:", coinInfo);
         if (coinData) {
-          await CoinRepository.upsertCoin(
-            { coinId },
-            {
-              coinId,
-              coinName: coinId,
-              currentPrice: coinData.usd,
-              marketCap: coinData.usd_market_cap,
-              change_24h: coinData.usd_24h_change,
-              lastUpdated: new Date(),
-            }
-          );
+          await CoinRepository.createCoin(coinInfo);
         }
       }
-
-      console.log("Coins data updated successfully.");
     } catch (error) {
       console.error("Error while fetching coins data:", error);
     }
-  }
-
-  public async getCoins(): Promise<ICoin[]> {
-    return await CoinRepository.getCoins();
   }
 
   public backGroundJob(): void {
@@ -67,6 +60,15 @@ class CoinService {
       console.log("Running background job to fetch and storing coins data");
       this.fetchAndStoreCoins();
     });
+  }
+
+  // Task 2
+  public async getCoins(): Promise<ICoin[]> {
+    return await CoinRepository.getCoins();
+  }
+
+  public async getCoinByCoinId(coinId: string): Promise<ICoin | null> {
+    return await CoinRepository.getCoinByCoinId(coinId);
   }
 }
 
