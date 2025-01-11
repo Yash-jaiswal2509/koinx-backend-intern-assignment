@@ -8,5 +8,6 @@ coinRouter.get("/", (req: Request, res: Response) => {
 });
 
 coinRouter.get("/stats", CoinController.getCoinById);
+coinRouter.get("/deviation", CoinController.getStandardDeviation);
 
 export default coinRouter;

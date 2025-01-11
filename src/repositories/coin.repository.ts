@@ -4,7 +4,7 @@ import CoinModel, { ICoin } from "../models/coin.model";
 // Task 1: CRUD operations
 class CoinRepository {
   async createCoin(coin: Partial<ICoin>): Promise<ICoin> {
-    return await CoinModel.create(coin,);
+    return await CoinModel.create(coin);
   }
 
   async getCoins(): Promise<ICoin[]> {
@@ -29,7 +29,7 @@ class CoinRepository {
   }
 
   async getCoinByCoinId(coinId: string): Promise<ICoin | null> {
-    return await CoinModel.findOne({ coinId }).exec();
+    return await CoinModel.findOne({ coinId }).sort({ createdAt: -1 }).exec();
   }
 
   async upsertCoin(
@@ -42,6 +42,15 @@ class CoinRepository {
     }).exec();
 
     return result as ICoin | null;
+  }
+
+  async getStandardDeviation(coinId: string): Promise<ICoin[] | null> {
+    const result = await CoinModel.find({ coinId })
+      .sort({ createdAt: -1 })
+      .limit(100)
+      .exec();
+
+    return result as ICoin[] | null;
   }
 }
 

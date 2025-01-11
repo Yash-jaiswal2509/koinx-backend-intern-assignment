@@ -70,6 +70,21 @@ class CoinService {
   public async getCoinByCoinId(coinId: string): Promise<ICoin | null> {
     return await CoinRepository.getCoinByCoinId(coinId);
   }
+
+  public async getStandardDeviation(coinId: string): Promise<number | null> {
+    const records = await CoinRepository.getStandardDeviation(coinId);
+    if (!records || records.length == 0) {
+      return null;
+    }
+
+    const prices = records.map((record) => record.currentPrice);
+    const mean = prices.reduce((a, b) => a + b, 0) / prices.length;
+    const squaredDifferences = prices.map((price) => Math.pow(price - mean, 2));
+    const variance = squaredDifferences.reduce((a, b) => a + b, 0) / squaredDifferences.length;
+    const standardDeviation = Math.sqrt(variance);
+    
+    return standardDeviation;
+  }
 }
 
 export default new CoinService();
